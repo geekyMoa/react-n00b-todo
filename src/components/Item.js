@@ -20,3 +20,7 @@ export default class Item extends React.Component {
     );
   }
 }
+
+Item.propTypes = {
+  handle: React.PropTypes.func.isRequired
+}

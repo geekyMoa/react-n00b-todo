@@ -16,8 +16,8 @@ export default class App extends Component {
   }
 
   handleSubmit(e) {
-    const value = e.currentTarget.children.new_item.value;
-    e.currentTarget.children.new_item.value = '';
+    const value = this.refs.tha_input.value;
+    this.refs.tha_input.value = '';
 
     let newItems = this.state.items;
     newItems.push({
@@ -48,24 +48,24 @@ export default class App extends Component {
 
     switch(type) {
       case 'all':
-        items.map((item, i, arr)=>{
+        items.forEach((item, i, arr)=>{
           items[i].isVisible = 1;
         });
         items.sort((a, b) => a.isCompleted - b.isCompleted);
         break;
       case 'todo':
-        items.map((item, i, arr) => {
+        items.forEach((item, i, arr) => {
           items[i].isVisible = item.isCompleted ? 0 : 1;
         })
         break;
       case 'completed':
-        items.map((item, i, arr) => {
+        items.forEach((item, i, arr) => {
           items[i].isVisible = item.isCompleted ? 1 : 0;
-        })
+        });
         break;
+
       case 'delete':
-        const keep = items;
-        items = keep.filter((el, i, arr) => !el.isCompleted);
+        items = items.filter((el, i, arr) => !el.isCompleted);
         break;
     }
 
@@ -75,15 +75,15 @@ export default class App extends Component {
   }
 
   render() {
-    const things = this.state.items.map((thing, i, a) => {
-      return thing.isVisible ? <Item key={i} arrayKey={i} item={thing} handle={this.handleClick.bind(this)}/> : '';
+    const things = this.state.items.map((thing, i) => {
+      return thing.isVisible ? <Item key={i} arrayKey={i} item={thing} handle={this.handleClick.bind(this)}/> : null;
     });
 
     return (
         <div>
           <Header />
           <form onSubmit={this.handleSubmit.bind(this)}>
-            <input type="text" name="new_item"/>
+            <input type="text" ref="tha_input" name="new_item"/>
           </form>
           <button onClick={this.handleFilter.bind(this, 'all')}>All</button>
           <button onClick={this.handleFilter.bind(this, 'todo')}>To do</button>
